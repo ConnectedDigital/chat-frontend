@@ -1,0 +1,47 @@
+@import "../../color";
+
+$chat-container-width: 600px;
+$margin-card: 5px;
+
+.chat-conteiner{
+  position: relative;
+  width: $chat-container-width;
+  height: 850px;
+  margin: auto;
+  background: $brown-color;
+}
+.message-container{
+  width: $chat-container-width;
+  height: 791px;
+  overflow: auto;
+}
+.delete-button{
+  margin-left: 400px;
+}
+.button-input-container{
+  position: absolute;
+  bottom: 0px;
+  width: $chat-container-width;
+}
+.example-full-width{
+  width: calc(100% - 81px);
+  color: white;
+}
+.button{
+  margin-left: $margin-card;
+}
+.card-message{
+  margin-bottom: $margin-card;
+  background: $brown-color2;
+  color: white;
+}
+.message-container::-webkit-scrollbar{
+  width: 0;
+}
+.url{
+  color: grey;
+}
+.url:hover{
+ color: $red-color;
+}
+

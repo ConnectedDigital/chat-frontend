@@ -1,0 +1,23 @@
+<mat-card class="chat-conteiner">
+  <div class="message-container">
+    <div *ngFor="let message of messages">
+      <mat-card class="card-message">
+        <mat-card-header>
+          <mat-card-title>Name</mat-card-title>
+          <button mat-raised-button class="delete-button" color="warn" (click)="delete();">Delete</button>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="!isLink(message)">{{message}}</div>
+          <a class="url" href="{{message}}" *ngIf="isLink(message)">{{message}}</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="button-input-container">
+    <mat-form-field class="example-full-width">
+      <input (keydown.enter)="add(inputMessage.value)" #inputMessage matInput placeholder="Input">
+    </mat-form-field>
+
+    <button mat-raised-button class="button" color="primary" (click)="add(inputMessage.value)">Submit</button>
+  </div>
+</mat-card>
