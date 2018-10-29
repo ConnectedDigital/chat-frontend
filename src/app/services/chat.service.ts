@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as io from 'socket.io-client';
+import {User} from '../models/user.model';
+import {Message} from '../models/message.model';
 
 @Injectable()
 export class ChatService {
@@ -12,27 +14,41 @@ export class ChatService {
     this.socket = io(this.url);
   }
 
-  public connect() {
-    this.socket.on('connect', () => console.log('Connected to server...'));
-  }
-
-  public joinUser(username: string) {
-    this.socket.emit('join-user', username);
-  }
-
-  public getUsers() {
-    return Observable.create(observer => {
-      this.socket.on('join-user', (user) => observer.next(user));
+  connect(): void {
+    this.socket.on('connect', () => {
+      console.log('Connected to server...');
     });
   }
 
-  public sendMessage(username: string, text: string): void {
-    this.socket.emit('message', {username, text});
+  getUser(): Observable<User> {
+    return Observable.create(observer => {
+      this.socket.on('user', (user: User) => observer.next(user));
+    });
   }
 
-  public getMessages() {
+  getUsers(): Observable<User[]> {
     return Observable.create(observer => {
-      this.socket.on('message', ({username, text, timestamp}) => observer.next({username, text, timestamp}));
+      this.socket.on('users', (users: User[]) => observer.next(users));
     });
+  }
+
+  joinUser(user: User): void {
+    this.socket.emit('user', user);
+  }
+
+  getMessage(): Observable<Message> {
+    return Observable.create(observer => {
+      this.socket.on('message', (message: Message) => observer.next(message));
+    });
+  }
+
+  getMessages(): Observable<Message[]> {
+    return Observable.create(observer => {
+      this.socket.on('messages', (messages: Message[]) => observer.next(messages));
+    });
+  }
+
+  sendMessage(message: Message): void {
+    this.socket.emit('message', message);
   }
 }

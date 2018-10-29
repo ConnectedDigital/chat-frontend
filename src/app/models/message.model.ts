@@ -1,5 +1,3 @@
 export class Message {
-  constructor(public username: string,
-              public text: string,
-              public timestamp: any) {}
+  constructor(public id: string, public from: string, public text: string, public at: number) { }
 }
