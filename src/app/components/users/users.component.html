@@ -1,0 +1,17 @@
+<div class="uk-card uk-card-default uk-card-hover">
+  <div class="uk-card-header">
+    <h3 class="uk-text-center uk-text-uppercase">Users</h3>
+  </div>
+  <div class="uk-card-body">
+    <div *ngIf="users.length === 0">
+      <h5 class="uk-text-center uk-text-uppercase">Users will appear here...</h5>
+    </div>
+    <dl *ngFor="let user of users" class="uk-description-list uk-description-list-divider">
+      <dt>{{user.username}}</dt>
+    </dl>
+  </div>
+  <div class="uk-card-footer">
+    <a class="uk-button uk-button-default uk-width-1-1" href="#user-log-in" uk-toggle>Join</a>
+  </div>
+</div>
+<app-user-log-in id="user-log-in"></app-user-log-in>

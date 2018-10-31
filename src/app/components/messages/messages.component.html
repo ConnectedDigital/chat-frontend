@@ -1,0 +1,38 @@
+<div class="uk-card uk-card-default uk-card-hover">
+  <div class="uk-card-body">
+    <div class="uk-panel uk-panel-scrollable uk-height-1-1" style="height: 400px">
+      <div *ngIf="messages.length === 0">
+        <h5 class="uk-text-center uk-text-uppercase">Messages will appear here...</h5>
+      </div>
+      <div class="uk-margin-small-left uk-margin-small-right">
+        <dl class="uk-description-list uk-description-list-divider uk-placeholder" *ngFor="let message of messages">
+          <dt>{{message.at}}: {{message.from}}</dt>
+          <div *ngIf="!message.link">
+            <dd class="uk-margin-small-left">{{message.text}}</dd>
+          </div>
+          <div *ngIf="message.link" class="uk-child-width-1-2" style="margin-top: 10px" uk-grid>
+            <div *ngIf="message.link.imageUrl">
+              <img src="{{message.link.imageUrl}}" width="200" height="200" alt="image">
+            </div>
+            <ul class="uk-list">
+              <li *ngIf="message.link.url">
+                <a href="{{message.link.url}}" target="_blank">Link</a>
+              </li>
+              <li *ngIf="message.link.title">{{message.link.title}}</li>
+              <li *ngIf="message.link.description" class="uk-text-meta">{{message.link.description}}</li>
+            </ul>
+          </div>
+        </dl>
+      </div>
+    </div>
+    <hr class="uk-divider-icon">
+    <form [formGroup]="messageForm" (ngSubmit)="onSendMessage()" uk-grid>
+      <div class="uk-width-3-4">
+        <input type="text" [formControlName]="'message'" class="uk-input" placeholder="Message...">
+      </div>
+      <div class="uk-width-1-4 uk-text-right">
+        <button type="submit" class="uk-button uk-button-primary" [disabled]="!messageForm.valid">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
