@@ -1,41 +1,22 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {User} from '../../models/user.model';
+import {Component, OnInit} from '@angular/core';
 import {UsersService} from '../../services/users.service';
+import {User} from '../../models/user.model';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit, OnDestroy {
-  user$: Subscription;
-  users$: Subscription;
-
+export class UsersComponent implements OnInit {
   users: User[] = [];
 
   constructor(private usersService: UsersService) { }
 
   ngOnInit() {
-    this.user$ = this.usersService.getUser()
-      .subscribe((user: User) => {
-        this.users.push(user);
-      });
+    this.usersService.getUsers()
+      .subscribe((users: User[]) => this.users.push(...users));
 
-    this.users$ = this.usersService.getUsers()
-      .subscribe((users: User[]) => {
-        for (const user of users) {
-          this.users.push(user);
-        }
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.user$ !== undefined) {
-      this.user$.unsubscribe();
-    }
-    if (this.users$ !== undefined) {
-      this.users$.unsubscribe();
-    }
+    this.usersService.userSubject
+      .subscribe((user: User) => this.users.push(user));
   }
 }

@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Subject} from 'rxjs';
 
 import {Message} from '../models/message.model';
 import {ConnectionService} from './connection.service';
+import {environment} from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class MessagesService {
+  messageSubject = new Subject<Message>();
 
-  constructor(private connection: ConnectionService) { }
-
-  getMessage(): Observable<Message> {
-    return Observable.create(observer => {
-      this.connection.socket.on('message', (message: Message) => observer.next(message));
-    });
+  constructor(private httpClient: HttpClient,
+              private connection: ConnectionService) {
+    this.connection.socket.on('message', (message: Message) => this.messageSubject.next(message));
   }
 
-  getMessages(): Observable<Message[]> {
-    return Observable.create(observer => {
-      this.connection.socket.on('messages', (messages: Message[]) => observer.next(messages));
-    });
+  getMessages() {
+    return this.httpClient.get<Message[]>(`${environment.backendUrl}/messages`);
   }
 
   sendMessage(message: Message): void {

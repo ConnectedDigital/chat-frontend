@@ -4,15 +4,13 @@ import {User} from '../../../models/user.model';
 import {UsersService} from '../../../services/users.service';
 
 @Component({
-  selector: 'app-user-log-in',
-  templateUrl: './user-log-in.component.html',
-  styleUrls: ['./user-log-in.component.css']
+  selector: 'app-user-join',
+  templateUrl: './user-join.component.html',
+  styleUrls: ['./user-join.component.css']
 })
-export class UserLogInComponent implements OnInit {
-  @Input() id: string;
+export class UserJoinComponent implements OnInit {
+  @Input() modalID: string;
   userForm: FormGroup;
-
-  users: User[] = [];
 
   constructor(private usersService: UsersService) { }
 
@@ -27,8 +25,8 @@ export class UserLogInComponent implements OnInit {
   }
 
   onJoinUser() {
-    this.usersService.username = this.userForm.get('username').value;
-    const user = new User(null, this.usersService.username);
+    this.usersService.username.next(this.userForm.get('username').value);
+    const user = new User(null, this.userForm.get('username').value);
 
     this.usersService.joinUser(user);
     this.userForm.reset();
